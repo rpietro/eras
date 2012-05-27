@@ -1,11 +1,9 @@
-#latest
-
 #######################################################################################
 #ERAS.R is licensed under a Creative Commons Attribution - Non commercial 3.0 Unported License. see full license at the end of this file.
 #######################################################################################
 
 #Worni, please ignore all the comments with the word TODO, these are just notes for myself in relation to programming stuff i am working
-#Worni, i saw that in your do file you mix data management with modeling. i wouldn't do that, it makes it hard to maintain. instead, i would have a section at the beginning where all the data management is done. then in subsequent sections you can build your objects and models
+#Worni, i saw that in your do file you mix data management with modeling. i wouldn't do that, it makes it hard to find stuff and maintain. instead, i would have a section preceding table 1 where all the data management is done. then in subsequent sections you can build your objects and models
 
 #TODO: check git book on http://goo.gl/j2Oxt
 #TODO: investigate connection with figshare http://goo.gl/QXlpr
@@ -22,22 +20,16 @@ ls()
 #dettach all packages
 detach()
 
-<<<<<<< HEAD
 #Worni, the first time you run this script you will have to run the line below. just take the # out so that it is no longer a comment but an active command. after you run it once in your computer, you don't need to run it again
 lapply(c("ggplot2", "psych", "RCurl", "irr", "car","Hmisc", "gmodels", "DAAG"), install.packages, character.only=T)
 
 #TODO create mlibrary function to upload many packages and post as gist
-lapply(c("ggplot2", "psych", "RCurl", "irr", "car","Hmisc", "gmodels", "DAAG"), library, character.only=T)
-=======
-#only install below if you don't have them already installed
-#Worni, please see 
-#install.packages(c=("package1","package2"))
-
-#TODO create mlibrary function to upload many packages and post as gist
 lapply(c("ggplot2", "psych", "RCurl", "irr", "car","Hmisc", "gmodels"), library, character.only=T)
->>>>>>> 0e5e8b765d76ea28761bb5776e8ed1dc5b86d7e7
 
-#uploading data ------------------------------------------------------------------------
+#####################################################################################
+#IMPORTING DATA
+#####################################################################################
+
 #Worni, replace below by path to the data file. command will throw all the data into the erasData object
 erasData <- read.csv("/Users/rpietro/Google Drive/R/nonpublicdata/ERAS/eras.csv", stringsAsFactors=FALSE)
 #below will view ERAS data in a spreadsheet format
@@ -49,10 +41,12 @@ str(erasData)
 attach(erasData)
 
 ###########################################################################################
-#DEMOGRAPHICS
+#TABLE 1: DEMOGRAPHICS
 ###########################################################################################
 
-#TODO videos: Ricardo's RStudio preferences (wrapping, etc)
+#TODO videos: Ricardo's RStudio preferences (wrapping, etc), how to open data, how to run R scripts
+
+#
 
 #Worni, with a few simple functions I can easily reduce each one of your tables to a few lines, and later automatically throw all of the output into a table. this means that your tables will be automatically updated every time you  won't have to do any more tables by hand, ever!!! to get started, please create a few vectors with the following (code will be below): a vector with your continuous (integer) outcomes, a vector with your categorical (factor) outcomes. then just let me know in a comment what your predictor is. what i will do is to take each vector and apply a single command to run the same test against the predictor, all at once.
 
@@ -70,9 +64,8 @@ t.test(age ~ datasetyear)
 # tab year gender, row chi m
 # tab year gender, row chi 
 
-#option prop.r=TRUE asks for the display to be by rows. check ?CrossTable
+#option prop.r=TRUE asks for the display to be by rows. check ?CrossTable for other options
 CrossTable(year, gender, chisq=TRUE, format="SPSS", prop.r=TRUE)
-
 
 # tab race year, row col chi m
 # tab race year, row col chi
@@ -82,6 +75,7 @@ CrossTable(year, gender, chisq=TRUE, format="SPSS", prop.r=TRUE)
 # replace rac3groups=2 if race=="A"|race=="D"|race=="I"|race=="U"|race==""
 
 #Worni, i am assuming all of this recoding has already being done, but below is just for future reference. just bear in mind that i am not sure if it's a good thing to replace missing by 2
+
 #rac3groups <- recode(race, "'W'=0; 'B'=1; c=('A','D','I')=2)
 #Worni, if you really want to replace all the missing by 2, then the code above would look like this:
 #rac3groups <- recode(race, " 'W'=0; 'B'=1; else='2' ")
