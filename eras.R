@@ -3,6 +3,8 @@
 #######################################################################################
 
 # Elias was here ####################
+# Elias was here ####################
+# Elias was here ####################
 
 #Worni, please ignore all the comments with the word TODO, these are just notes for myself in relation to programming stuff i am working
 #Worni, i saw that in your do file you mix data management with modeling. i wouldn't do that, it makes it hard to find stuff and maintain. instead, i would have a section preceding table 1 where all the data management is done. then in subsequent sections you can build your objects and models
