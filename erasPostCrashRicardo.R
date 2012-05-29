@@ -24,7 +24,7 @@ detach()
 lapply(c("ggplot2", "psych", "RCurl", "irr", "car","Hmisc", "gmodels", "DAAG"), install.packages, character.only=T)
 
 #TODO create mlibrary function to upload many packages and post as gist
-lapply(c("ggplot2", "psych", "RCurl", "irr", "car","Hmisc", "gmodels", "DAAG"), library, character.only=T)
+lapply(c("ggplot2", "psych", "RCurl", "irr", "car","Hmisc", "gmodels"), library, character.only=T)
 
 #####################################################################################
 #IMPORTING DATA
@@ -59,7 +59,7 @@ describe(erasData)
 
 #Worni, year only has values of 1 in the original data set
 # ttest age, by(year)
-t.test(age ~ year)
+t.test(age ~ datasetyear)
 
 # tab year gender, row chi m
 # tab year gender, row chi 
@@ -137,7 +137,7 @@ summary(hgb~year)
 # ttest creatinin, by(year)
 # kwallis creatinin, by(year)
 
-kruskal.test(creatinine ~ year)
+kruskal.test(creatinin ~ year)
 
 # 
 # *** ??????? ***
@@ -363,6 +363,7 @@ kruskal.test(creatinine ~ year)
 # logistic atleastonecompl year
 
 model1  <- glm(atleastonecompl~year,family=binomial(link="logit"))
+<<<<<<< HEAD
 summary(model1) #gives you model results
 coefficients(model1) # model coefficients
 confint(model1, level=0.95) # CIs for model parameters 
@@ -373,14 +374,23 @@ vcov(model1) # covariance matrix for model parameters
 influence(model1) # regression diagnostics
 layout(matrix(c(1,2,3,4),2,2)) # creates the white space for 4 graphs/page 
 plot(model1) #generates 4 graphs/page
+CVbinary(model1) #cross validation. Worni, this is something we should start trying
+
+=======
+summary(model1)
+anova(model1)
+confint(model1)
+>>>>>>> 0e5e8b765d76ea28761bb5776e8ed1dc5b86d7e7
 
 # xi: logistic atleastonecompl year i.proclap age female bmi asa i.operation i.dg4gr 
 # xi: logistic atleastonecompl i.epidural*year age female bmi asa i.operation i.dg4gr 
 # 
+<<<<<<< HEAD
 
+#Worni, this is new stata syntax and then i don't know what it means. if you shoot me an explanation i can give you the R equivalent
 
-#Worni, above is new stata syntax and then i don't know what it means. if you shoot me an explanation i can give you the R equivalent
-
+=======
+>>>>>>> 0e5e8b765d76ea28761bb5776e8ed1dc5b86d7e7
 # 
 # tab los, m
 # ttest los, by( year)
@@ -388,10 +398,12 @@ plot(model1) #generates 4 graphs/page
 # bysort year: sum los, d
 # kwallis los, by( year)
 # ranksum los, by(year)
+<<<<<<< HEAD
 
 wilcox.test(los, year, conf.int = TRUE)
 
-
+=======
+>>>>>>> 0e5e8b765d76ea28761bb5776e8ed1dc5b86d7e7
 # 
 # gen ln_los=ln(los)
 # histogram ln_los
@@ -425,36 +437,26 @@ wilcox.test(los, year, conf.int = TRUE)
 # 
 # predxcat ln_los, xvar(year) 
 # predxcat ln_los, xvar(year) adjust (laparoscopic age female bmi asa op1 op2 op3 op4 op5 op6 dg1 dg2 dg3 dg4) model mean
+<<<<<<< HEAD
 
-
-library(ISwR)
-attach(thuesen)
-lm.velo  <- lm(short.velocity~blood.glucose)
-pred.frame <- data.frame(blood.glucose=4:20)
-#pred.frame has 17 observations, while data set has 24
-pp  <- predict(lm.velo, int="p", newdata=pred.frame)
-
-model2  <- glm(ln_los ~ year + laparoscopic + age + female + bmi + asa + op1 + op2 + op3 + op4 + op5 + op6 + dg1 + dg2 + dg3 + dg4, family=gaussian) #this is your regular model
-pred.frame  <- data.frame(year) #these are the values you want to predict for
-
-pp  <-  predict(model2, int="p", newdata=pred.frame)
-pc  <-  predict(model2, int="c", newdata=pred.frame)
-plot(ln)
-boxplot(ln_los ~ year)
-
+model2  <- ln_los ~ year + laparoscopic + age + female + bmi + asa + op1 + op2 + op3 + op4 + op5 + op6 + dg1 + dg2 + dg3 + dg4 #this is your regular model
+year.pred  <- c(1,2) #these are the values you want to predict for
+model2_hat  <- predict(model1, newdata=year.pred,interval="p", level=0.95)) #here you are using your original model to predict values as a function of specific years as you specified under year.pred
+model2_hat #this command will show you the values
 
 # 
 # 
 ############################################################################
 #TABLE 4
 ############################################################################
-
-  # 
-  # 
-  # 
-  # ***********************
-  #   *** TABLE 4 ***********
-  #   ***********************
+=======
+# 
+# 
+# 
+# ***********************
+#   *** TABLE 4 ***********
+#   ***********************
+>>>>>>> 0e5e8b765d76ea28761bb5776e8ed1dc5b86d7e7
 #   tab increase_care year, col chi m
 # tab increase_care year, chi 
 # gen carinc=0
@@ -481,9 +483,12 @@ boxplot(ln_los ~ year)
 # kwallis restart_antibiotic, by(year)
 # ttest restart_antibiotic, by(year)
 # nbreg restart_antibiotic year
+<<<<<<< HEAD
 
-#Worni, we went over this in a workshop, remember? http://goo.gl/
+#Worni, we went over this in a workshop, remember? http://goo.gl/5BMl1
 
+=======
+>>>>>>> 0e5e8b765d76ea28761bb5776e8ed1dc5b86d7e7
 # 
 # gen ab_any=1
 # replace ab_any=0 if restart_antibiotic==0
