@@ -2,8 +2,6 @@
 #ERAS.R is licensed under a Creative Commons Attribution - Non commercial 3.0 Unported License. see full license at the end of this file.
 #######################################################################################
 
-#Worni, please ignore all the comments with the word TODO, these are just notes for myself in relation to programming stuff i am working
-#Worni, i saw that in your do file you mix data management with modeling. i wouldn't do that, it makes it hard to find stuff and maintain. instead, i would have a section preceding table 1 where all the data management is done. then in subsequent sections you can build your objects and models
 
 #TODO: check git book on http://goo.gl/j2Oxt
 #TODO: investigate connection with figshare http://goo.gl/QXlpr
@@ -20,24 +18,23 @@ ls()
 #dettach all packages
 detach()
 
-#Worni, the first time you run this script you will have to run the line below. just take the # out so that it is no longer a comment but an active command. after you run it once in your computer, you don't need to run it again
-lapply(c("ggplot2", "psych", "RCurl", "irr", "car","Hmisc", "gmodels", "DAAG"), install.packages, character.only=T)
+#lapply(c("ggplot2", "psych", "RCurl", "irr", "car","Hmisc", "gmodels", "DAAG"), install.packages, character.only=T)
 
 #TODO create mlibrary function to upload many packages and post as gist
-lapply(c("ggplot2", "psych", "RCurl", "irr", "car","Hmisc", "gmodels", "DAAG"), library, character.only=T)
+lapply(c("ggplot2", "psych", "RCurl", "irr", "car","Hmisc", "gmodels"), library, character.only=T)
 
 #####################################################################################
 #IMPORTING DATA
 #####################################################################################
 
-#Worni, replace below by path to the data file. command will throw all the data into the erasData object
-erasData <- read.csv("/Users/rpietro/Google Drive/R/nonpublicdata/ERAS/eras.csv", stringsAsFactors=FALSE)
+#replace below by path to the data file. command will throw all the data into the erasData object
+erasData <- read.csv("/Users/mathiasworni/Dropbox/Updates/ERAS/Merged Dataset/datasetRICARDOrecodedcsv.csv", stringsAsFactors=FALSE)
 #below will view ERAS data in a spreadsheet format
-#View(erasData)
+View(erasData)
 #below will list variable names, classes (integer, factor, etc), alternative responses
 str(erasData)
 #list variable names so that they can be used later
-# names(eras.data)
+#names(eras.data)
 attach(erasData)
 
 ###########################################################################################
@@ -46,26 +43,22 @@ attach(erasData)
 
 #TODO videos: Ricardo's RStudio preferences (wrapping, etc), how to open data, how to run R scripts
 
-#
+#year is the predictor variable
+#integerOutcomes  <- c(age, bmi, hgb, wbc, creatinin) #Worni, just replace the var1 etc by the name of the continuous (integer) outcomes 
 
-#Worni, with a few simple functions I can easily reduce each one of your tables to a few lines, and later automatically throw all of the output into a table. this means that your tables will be automatically updated every time you  won't have to do any more tables by hand, ever!!! to get started, please create a few vectors with the following (code will be below): a vector with your continuous (integer) outcomes, a vector with your categorical (factor) outcomes. then just let me know in a comment what your predictor is. what i will do is to take each vector and apply a single command to run the same test against the predictor, all at once.
-
-#integerOutcomes  <- c(var1, var2, var3) #Worni, just replace the var1 etc by the name of the continuous (integer) outcomes 
-
-#factorOutcomes  <- c(var1, var2, var3) #Worni, just replace the var1 etc by the name of the categorical (factor) outcomes 
+#factorOutcomes  <- c(female, race3groups, asa2groups, difinal, operation, op2groups, laparoscopic) #Worni, just replace the var1 etc by the name of the categorical (factor) outcomes 
 
 
 describe(erasData)
 
-#Worni, year only has values of 1 in the original data set
-# ttest age, by(year)
+
 t.test(age ~ year)
 
-# tab year gender, row chi m
+#tab year gender, row chi m
 # tab year gender, row chi 
 
 #option prop.r=TRUE asks for the display to be by rows. check ?CrossTable for other options
-CrossTable(year, gender, chisq=TRUE, format="SPSS", prop.r=TRUE)
+CrossTable(year, gender, chisq=TRUE, missing.include=TRUE, format="SAS", prop.r=FALSE)
 
 # tab race year, row col chi m
 # tab race year, row col chi
@@ -74,11 +67,9 @@ CrossTable(year, gender, chisq=TRUE, format="SPSS", prop.r=TRUE)
 # replace rac3groups=1 if race=="B"
 # replace rac3groups=2 if race=="A"|race=="D"|race=="I"|race=="U"|race==""
 
-#Worni, i am assuming all of this recoding has already being done, but below is just for future reference. just bear in mind that i am not sure if it's a good thing to replace missing by 2
+CrossTable(year, rac3groups, chisq=TRUE, missing.include=TRUE, format="SAS", prop.r=FALSE)
 
-#rac3groups <- recode(race, "'W'=0; 'B'=1; c=('A','D','I')=2)
-#Worni, if you really want to replace all the missing by 2, then the code above would look like this:
-#rac3groups <- recode(race, " 'W'=0; 'B'=1; else='2' ")
+rac3groups <- recode(race, " 'W'=0; 'B'=1; else='2' ")
 
 # lab def ra 0 "White" 1 "Black" 2 "Others"
 # lab val rac3groups ra
@@ -88,7 +79,6 @@ CrossTable(year, gender, chisq=TRUE, format="SPSS", prop.r=TRUE)
 # tab ethnicty year, col chi 
 # 
 
-#Worni, not sure i understood what you did below as bmi is a continuous variable, at least in the data set you sent me
 
 # bysort year: tab bmi, m
 # sum bmi
@@ -138,7 +128,7 @@ summary(hgb~year)
 # kwallis creatinin, by(year)
 
 kruskal.test(creatinine ~ year)
-
+summary(creatinine~year)
 # 
 # *** ??????? ***
 #   tab na, m
@@ -171,7 +161,6 @@ kruskal.test(creatinine ~ year)
 # lab val dg4gr dg
 # tab dg4gr year, row col chi
 
-#Worni, in R you don't have to convert variables to a numeric format to play with them, and so there isn't really a label function, you just let the values be strings with the names you want and then do the computations from there. see section 11.1 of the book R for stata users i sent you
 
 # 
 # tab operation year , col chi m
@@ -363,6 +352,7 @@ kruskal.test(creatinine ~ year)
 # logistic atleastonecompl year
 
 model1  <- glm(atleastonecompl~year,family=binomial(link="logit"))
+<<<<<<< HEAD
 summary(model1) #gives you model results
 coefficients(model1) # model coefficients
 confint(model1, level=0.95) # CIs for model parameters 
@@ -373,14 +363,29 @@ vcov(model1) # covariance matrix for model parameters
 influence(model1) # regression diagnostics
 layout(matrix(c(1,2,3,4),2,2)) # creates the white space for 4 graphs/page 
 plot(model1) #generates 4 graphs/page
+CVbinary(model1) #cross validation. Worni, this is something we should start trying
+#Pietrobon, this does not work for me...
+
+=======
+summary(model1)
+anova(model1)
+confint(model1)
+>>>>>>> 0e5e8b765d76ea28761bb5776e8ed1dc5b86d7e7
 
 # xi: logistic atleastonecompl year i.proclap age female bmi asa i.operation i.dg4gr 
 # xi: logistic atleastonecompl i.epidural*year age female bmi asa i.operation i.dg4gr 
 # 
+<<<<<<< HEAD
 
+#Worni, this is new stata syntax and then i don't know what it means. if you shoot me an explanation i can give you the R equivalent
+#Pietrobon, the xi: means that it takes categorical variables as categorical and not as continuous variables
+# e.g. i.operation then means that it takes operation1 operation2 operation3 operation4 as categorical varialbes
+# if you don't add the xi: .... i.*** then it would just run operation as a continuous variable, most likely, 
+# in earlier times you had to recode to operation1 operation2 operation3 as categorical variables
+### the i.epidural*year means, that I added the interaction term between i.epidural (most likely the i.*** would not be necessary) and year 
 
-#Worni, above is new stata syntax and then i don't know what it means. if you shoot me an explanation i can give you the R equivalent
-
+=======
+>>>>>>> 0e5e8b765d76ea28761bb5776e8ed1dc5b86d7e7
 # 
 # tab los, m
 # ttest los, by( year)
@@ -388,10 +393,12 @@ plot(model1) #generates 4 graphs/page
 # bysort year: sum los, d
 # kwallis los, by( year)
 # ranksum los, by(year)
+<<<<<<< HEAD
 
 wilcox.test(los, year, conf.int = TRUE)
 
-
+=======
+>>>>>>> 0e5e8b765d76ea28761bb5776e8ed1dc5b86d7e7
 # 
 # gen ln_los=ln(los)
 # histogram ln_los
@@ -425,36 +432,27 @@ wilcox.test(los, year, conf.int = TRUE)
 # 
 # predxcat ln_los, xvar(year) 
 # predxcat ln_los, xvar(year) adjust (laparoscopic age female bmi asa op1 op2 op3 op4 op5 op6 dg1 dg2 dg3 dg4) model mean
+<<<<<<< HEAD
 
-
-library(ISwR)
-attach(thuesen)
-lm.velo  <- lm(short.velocity~blood.glucose)
-pred.frame <- data.frame(blood.glucose=4:20)
-#pred.frame has 17 observations, while data set has 24
-pp  <- predict(lm.velo, int="p", newdata=pred.frame)
-
-model2  <- glm(ln_los ~ year + laparoscopic + age + female + bmi + asa + op1 + op2 + op3 + op4 + op5 + op6 + dg1 + dg2 + dg3 + dg4, family=gaussian) #this is your regular model
-pred.frame  <- data.frame(year) #these are the values you want to predict for
-
-pp  <-  predict(model2, int="p", newdata=pred.frame)
-pc  <-  predict(model2, int="c", newdata=pred.frame)
-plot(ln)
-boxplot(ln_los ~ year)
-
+model2  <- ln_los ~ year + laparoscopic + age + female + bmi + asa + op1 + op2 + op3 + op4 + op5 + op6 + dg1 + dg2 + dg3 + dg4 #this is your regular model
+year.pred  <- c(1,2) #these are the values you want to predict for
+model2_hat  <- predict(model1, newdata=year.pred,interval="p", level=0.95)) #here you are using your original model to predict values as a function of specific years as you specified under year.pred
+# Pietrobon, I got an erromessage here...
+model2_hat #this command will show you the values
 
 # 
 # 
 ############################################################################
 #TABLE 4
 ############################################################################
-
-  # 
-  # 
-  # 
-  # ***********************
-  #   *** TABLE 4 ***********
-  #   ***********************
+=======
+# 
+# 
+# 
+# ***********************
+#   *** TABLE 4 ***********
+#   ***********************
+>>>>>>> 0e5e8b765d76ea28761bb5776e8ed1dc5b86d7e7
 #   tab increase_care year, col chi m
 # tab increase_care year, chi 
 # gen carinc=0
@@ -481,9 +479,12 @@ boxplot(ln_los ~ year)
 # kwallis restart_antibiotic, by(year)
 # ttest restart_antibiotic, by(year)
 # nbreg restart_antibiotic year
+<<<<<<< HEAD
 
-#Worni, we went over this in a workshop, remember? http://goo.gl/
+#Worni, we went over this in a workshop, remember? http://goo.gl/5BMl1
 
+=======
+>>>>>>> 0e5e8b765d76ea28761bb5776e8ed1dc5b86d7e7
 # 
 # gen ab_any=1
 # replace ab_any=0 if restart_antibiotic==0
