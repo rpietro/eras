@@ -2,7 +2,6 @@
 #ERAS.R is licensed under a Creative Commons Attribution - Non commercial 3.0 Unported License. see full license at the end of this file.
 #######################################################################################
 
-
 #####################################################################################
 #SETTING ENVIRONMENT
 #####################################################################################
