@@ -21,7 +21,7 @@ detach()
 #lapply(c("ggplot2", "psych", "RCurl", "irr", "car","Hmisc", "gmodels", "DAAG"), install.packages, character.only=T)
 
 #TODO create mlibrary function to upload many packages and post as gist
-lapply(c("ggplot2", "psych", "RCurl", "irr", "car","Hmisc", "gmodels"), library, character.only=T)
+lapply(c("ggplot2", "psych", "RCurl", "irr", "car","Hmisc", "gmodels","qpcR"), library, character.only=T)
 
 #####################################################################################
 #IMPORTING DATA
@@ -38,22 +38,40 @@ str(erasData)
 #names(eras.data)
 attach(erasData)
 
+
 ###########################################################################################
 #TABLE 1: DEMOGRAPHICS
 ###########################################################################################
 
 #TODO videos: Ricardo's RStudio preferences (wrapping, etc), how to open data, how to run R scripts
 
-#year is the predictor variable
-integerOutcomes  <- c(age, bmi, hgb, wbc, creatinine) 
-factorOutcomes  <- c(female, race3groups, asa2groups, difinal, operation, op2groups, laparoscopic) 
-lapply(integerOutcomes, t.test(x ~ year))
-
 
 describe(erasData)
 
+#year is the predictor variable
+integerOutcomes  <- c(age, bmi, hgb, wbc, creatinine) 
+#factorOutcomes  <- c(female, race3groups, asa2groups, difinal, operation, op2groups, laparoscopic)
 
-t.test(age ~ year)
+t.test(age~year)
+t.test(bmi~year)
+t.test(hgb~year)
+#below doesn't work since the missing values for wbc overlap with the values where year = 0, leaving year with a single category
+t.test(wbc~year)
+t.test(creatinine~year)
+
+
+ttest.outcomes  <- function(integer.vector, predictor) 
+  {
+  data.frame(integer.vector, predictor) #equalizing vector length
+  for (i in integer.vector) 
+    t.test(i ~ predictor, na.action=na.exclude)
+}
+
+#options(error=recover)
+ttest.outcomes(integerOutcomes, year)
+#debug(ttest.outcomes)
+
+
 
 #tab year gender, row chi m
 # tab year gender, row chi 
