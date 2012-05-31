@@ -28,9 +28,10 @@ lapply(c("ggplot2", "psych", "RCurl", "irr", "car","Hmisc", "gmodels"), library,
 #####################################################################################
 
 #replace below by path to the data file. command will throw all the data into the erasData object
-erasData <- read.csv("/Users/mathiasworni/Dropbox/Updates/ERAS/Merged Dataset/datasetRICARDOrecodedcsv.csv", stringsAsFactors=FALSE)
+erasData <- read.csv("/Users/rpietro/Google Drive/R/nonpublicdata/ERAS/eras.csv", stringsAsFactors=FALSE)
+#erasData <- read.csv("/Users/mathiasworni/Dropbox/Updates/ERAS/Merged Dataset/datasetRICARDOrecodedcsv.csv", stringsAsFactors=FALSE)
 #below will view ERAS data in a spreadsheet format
-View(erasData)
+#View(erasData)
 #below will list variable names, classes (integer, factor, etc), alternative responses
 str(erasData)
 #list variable names so that they can be used later
@@ -44,9 +45,9 @@ attach(erasData)
 #TODO videos: Ricardo's RStudio preferences (wrapping, etc), how to open data, how to run R scripts
 
 #year is the predictor variable
-#integerOutcomes  <- c(age, bmi, hgb, wbc, creatinin) #Worni, just replace the var1 etc by the name of the continuous (integer) outcomes 
-
-#factorOutcomes  <- c(female, race3groups, asa2groups, difinal, operation, op2groups, laparoscopic) #Worni, just replace the var1 etc by the name of the categorical (factor) outcomes 
+integerOutcomes  <- c(age, bmi, hgb, wbc, creatinine) 
+factorOutcomes  <- c(female, race3groups, asa2groups, difinal, operation, op2groups, laparoscopic) 
+lapply(integerOutcomes, t.test(x ~ year))
 
 
 describe(erasData)
