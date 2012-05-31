@@ -3,12 +3,6 @@
 #######################################################################################
 
 
-#TODO: check git book on http://goo.gl/j2Oxt
-#TODO: investigate connection with figshare http://goo.gl/QXlpr
-#TODO: format as knitr http://goo.gl/3UVAZ - bibliographic references will be dealt with as citations. need to check whether can add hyperlinks to the original publications
-#TODO: gists http://goo.gl/pYs6m
-#TODO for toolbox: rrdf, mysql, hadoop, toolbox input and output for clinicians (might have ontology down the line)
-
 #####################################################################################
 #SETTING ENVIRONMENT
 #####################################################################################
@@ -20,7 +14,6 @@ detach()
 
 #lapply(c("ggplot2", "psych", "RCurl", "irr", "car","Hmisc", "gmodels", "DAAG"), install.packages, character.only=T)
 
-#TODO create mlibrary function to upload many packages and post as gist
 lapply(c("ggplot2", "psych", "RCurl", "irr", "car","Hmisc", "gmodels","qpcR"), library, character.only=T)
 
 #####################################################################################
@@ -42,9 +35,6 @@ attach(erasData)
 ###########################################################################################
 #TABLE 1: DEMOGRAPHICS
 ###########################################################################################
-
-#TODO videos: Ricardo's RStudio preferences (wrapping, etc), how to open data, how to run R scripts
-
 
 describe(erasData)
 
