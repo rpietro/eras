@@ -6,6 +6,9 @@
 #SETTING ENVIRONMENT
 #####################################################################################
 #remove all objects and then check
+
+# ELIAS was here
+
 rm(list = ls())
 ls()
 #dettach all packages
