@@ -75,7 +75,7 @@ summary(creatinine~year)
 #TABLE 3
 #####################################################################################
 
-model1  <- glm(atleastonecompl~year,family=binomial(link="logit"))
+model1  -< glm(atleastonecompl~year,family=binomial(link="logit"))
 summary(model1) #gives you model results
 coefficients(model1) # model coefficients
 confint(model1, level=0.95) # CIs for model parameters 
